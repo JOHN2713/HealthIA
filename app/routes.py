@@ -18,6 +18,7 @@ from .models import Menu, SeguimientoDia
 from .utils import enviar_menu_por_correo
 from flask_mail import Message
 from . import mail
+from weasyprint import HTML
 import os
 main = Blueprint('main', __name__)
 
@@ -329,6 +330,8 @@ def enviar_menu_email(menu_id):
     return redirect(url_for('main.historial_menus'))
 
 
+from weasyprint import HTML
+
 @main.route('/descargar_menu_pdf/<int:menu_id>')
 @login_required
 def descargar_menu_pdf(menu_id):
@@ -408,23 +411,14 @@ def descargar_menu_pdf(menu_id):
                 font-size: 13px;
             }
         </style>
+    """
 
-        """
-
+    # Construcción del HTML final
     html_final = estilos_pdf + extra_info + menu.html_content
 
-
-    # Reemplazar rutas relativas con absolutas para imágenes
-    ruta_static_absoluta = os.path.abspath("app/static/img").replace("\\", "/")
-    html_final = html_final.replace('/static/img/', f'file:///{ruta_static_absoluta}/')
-
     try:
-        config = pdfkit.configuration(wkhtmltopdf="./bin/wkhtmltopdf")
-        options = {
-            'enable-local-file-access': None
-        }
-
-        pdf = pdfkit.from_string(html_final, False, configuration=config, options=options)
+        # Generar el PDF con WeasyPrint
+        pdf = HTML(string=html_final, base_url=request.host_url).write_pdf()
 
         return Response(
             pdf,
