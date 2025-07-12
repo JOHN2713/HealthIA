@@ -303,7 +303,7 @@ def enviar_menu_email(menu_id):
 
     # Generar el PDF desde HTML
     try:
-        config = pdfkit.configuration(wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe")
+        config = pdfkit.configuration(wkhtmltopdf="./bin/wkhtmltopdf")
         options = {
             'enable-local-file-access': None
         }
@@ -419,7 +419,7 @@ def descargar_menu_pdf(menu_id):
     html_final = html_final.replace('/static/img/', f'file:///{ruta_static_absoluta}/')
 
     try:
-        config = pdfkit.configuration(wkhtmltopdf=r"C:\\Program Files\\wkhtmltopdf\\bin\\wkhtmltopdf.exe")
+        config = pdfkit.configuration(wkhtmltopdf="./bin/wkhtmltopdf")
         options = {
             'enable-local-file-access': None
         }
