@@ -476,9 +476,7 @@ def descargar_menu_pdf(menu_id):
     html_final = re.sub(r'<img[^>]*>', '', html_final)
 
     try:
-        # Generar el PDF con WeasyPrint
         pdf = HTML(string=html_final, base_url=request.host_url).write_pdf()
-
         return Response(
             pdf,
             mimetype='application/pdf',
