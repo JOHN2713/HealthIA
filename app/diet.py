@@ -135,7 +135,7 @@ Genera un menú alimenticio para {days} día(s), con las siguientes característ
 🔸 Usa estos alimentos y proporciones: {alimentos_utilizados}.
 - Usa subtítulos <h3> con el nombre de la comida.
 - Incluye el **nombre del plato en negrita** y una lista ordenada (<ol>) con los ingredientes.
-- Los encabezados de las tablas deben tener fondo verde (#a3d9a5) o amarillo suave (#f4d35e) para destacar, con texto oscuro.
+- Los encabezados de las tablas deben tener fondo verde (#a3d9a5) o amarillo suave (#f4d35e) o rojo suave para destacar, con texto oscuro.
 - Muestra para cada ingrediente su **porcentaje aproximado y porción sugerida**
 
 🔸 Diseño tipo infografía:
