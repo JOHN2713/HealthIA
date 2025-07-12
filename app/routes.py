@@ -360,6 +360,8 @@ def enviar_menu_email(menu_id):
     """
 
     html_final = estilos_pdf + extra_info + menu.html_content
+    # 🔥 Eliminar imágenes del contenido antes de generar el PDF
+    html_final = re.sub(r'<img[^>]*>', '', html_final)
 
     try:
         # Generar el PDF desde HTML con WeasyPrint
