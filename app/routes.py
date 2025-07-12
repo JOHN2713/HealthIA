@@ -296,41 +296,97 @@ def enviar_menu_email(menu_id):
     </div>
     """
 
-    html_final = extra_info + menu.html_content
+    estilos_pdf = """
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                color: #333;
+                padding: 20px;
+            }
+            .card {
+                background-color: #f5f5f5;
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 30px;
+                page-break-inside: avoid;
+            }
+            .card-header {
+                background-color: #f9d342;
+                color: #333;
+                font-weight: bold;
+                padding: 10px;
+                font-size: 18px;
+                border-radius: 8px 8px 0 0;
+                text-align: center;
+            }
+            .card img {
+                max-width: 100%;
+                border-radius: 8px;
+                display: block;
+                margin: 10px auto;
+            }
+            .dish-name {
+                font-weight: bold;
+                margin-top: 10px;
+                margin-bottom: 5px;
+            }
+            .ingredients {
+                margin-left: 20px;
+                margin-bottom: 15px;
+            }
+            .ingredients li {
+                margin-bottom: 5px;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 10px;
+            }
+            table, th, td {
+                border: 1px solid #ccc;
+            }
+            th {
+                background-color: #27ae60;
+                color: white;
+                padding: 8px;
+                font-size: 14px;
+            }
+            td {
+                padding: 8px;
+                font-size: 13px;
+            }
+        </style>
+    """
 
-    # Reemplazar rutas relativas con absolutas para imágenes
-    ruta_static_absoluta = os.path.abspath("app/static/img").replace("\\", "/")
-    html_final = html_final.replace('/static/img/', f'file:///{ruta_static_absoluta}/')
+    html_final = estilos_pdf + extra_info + menu.html_content
 
-    # Generar el PDF desde HTML
     try:
-        config = pdfkit.configuration(wkhtmltopdf="./bin/wkhtmltopdf")
-        options = {
-            'enable-local-file-access': None
-        }
-
-        pdf = pdfkit.from_string(html_final, False, configuration=config, options=options)
+        # Generar el PDF desde HTML con WeasyPrint
+        pdf = HTML(string=html_final, base_url=request.host_url).write_pdf()
 
         # Contenido del correo
-        correo = current_user.email
         asunto = "📬 Tu menú generado con Diet Planner"
         cuerpo_html = f"""
-            <p>Hola <strong>{current_user.email}</strong>,</p>
+            <p>Hola <strong>{correo_usuario}</strong>,</p>
             <p>Adjunto encontrarás el PDF de tu menú generado desde la plataforma Diet Planner.</p>
             <p>¡Gracias por confiar en nosotros!</p>
             <p>Saludos,<br><em>El equipo de Diet Planner</em></p>
         """
 
-        enviar_menu_por_correo(correo, asunto, cuerpo_html, adjunto_bytes=pdf)
+        enviar_menu_por_correo(
+            destinatario=correo_usuario,
+            asunto=asunto,
+            cuerpo_html=cuerpo_html,
+            adjunto_bytes=pdf,
+            nombre_adjunto="menu_generado.pdf",
+            tipo_mime="application/pdf"
+        )
 
         flash("📧 Menú enviado al correo registrado exitosamente.", "success")
     except Exception as e:
         return f"Error al generar o enviar PDF: {e}", 500
 
     return redirect(url_for('main.historial_menus'))
-
-
-from weasyprint import HTML
 
 @main.route('/descargar_menu_pdf/<int:menu_id>')
 @login_required
