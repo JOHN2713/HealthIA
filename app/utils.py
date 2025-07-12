@@ -2,15 +2,15 @@ from flask_mail import Message
 from flask import current_app
 from . import mail
 
-def enviar_menu_por_correo(destinatario, asunto, cuerpo_html, adjunto_bytes=None, nombre_adjunto="menu_generado.pdf"):
+def enviar_menu_por_correo(destinatario, asunto, cuerpo_html, adjunto_bytes=None, nombre_adjunto=None, tipo_mime="application/pdf"):
     msg = Message(asunto, recipients=[destinatario])
     msg.html = cuerpo_html
 
-    if adjunto_bytes:
-        msg.attach(
-            filename=nombre_adjunto,
-            content_type="application/pdf",  # ✅ forzar envío como PDF
-            data=adjunto_bytes
-        )
+    if adjunto_bytes and nombre_adjunto:
+    msg.attach(
+        filename=nombre_adjunto,
+        content_type=tipo_mime,
+        data=adjunto_bytes
+    )
 
     mail.send(msg)
