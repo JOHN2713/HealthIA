@@ -1,6 +1,6 @@
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: url('../img/fondo.jpg') no-repeat center center fixed;
+  background: url('../img/fondo.webp') no-repeat center center fixed;
   background-size: cover;
   color: #333;
   margin: 0;
@@ -75,12 +75,12 @@ ul li {
 }
 
 .bg-plan {
-  background: url('../img/fondo_plan.jpg') no-repeat center center fixed;
+  background: url('../img/fondo_plan.webp') no-repeat center center fixed;
   background-size: cover;
 }
 
 .bg-historial {
-  background: url('../img/fondo_historial.jpg') no-repeat center center fixed;
+  background: url('../img/fondo_historial.webp') no-repeat center center fixed;
   background-size: cover;
 }
 

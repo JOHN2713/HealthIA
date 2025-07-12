@@ -5,10 +5,10 @@ from flask import current_app
 import random
 from config import Config
 # Elegir imágenes aleatorias
-imagen_desayuno = f"/static/img/desayuno{random.randint(1,4)}.jpg"
-imagen_almuerzo = f"/static/img/almuerzo{random.randint(1,4)}.jpg"
-imagen_cena = f"/static/img/cena{random.randint(1,4)}.jpg"
-imagen_snack = f"/static/img/snack{random.randint(1,4)}.jpg"
+imagen_desayuno = f"/static/img/desayuno{random.randint(1,4)}.webp"
+imagen_almuerzo = f"/static/img/almuerzo{random.randint(1,4)}.webp"
+imagen_cena = f"/static/img/cena{random.randint(1,4)}.webp"
+imagen_snack = f"/static/img/snack{random.randint(1,4)}.webp"
 
 # Configurar Gemini (reemplaza tu API key o usa .env)
 genai.configure(api_key=Config.GEMINI_API_KEY)
@@ -144,7 +144,7 @@ usa en el html <meta charset="utf-8">
 - Usa un contenedor <div class="grid-dieta"> con bloques .comida.
 - Cada bloque debe tener un color pastel diferente, borde redondeado, sombra suave y buena separación.
 - Dentro de cada bloque, incluye: plato, título, ingredientes, porcentaje y, 
- usa imagenes como desayuno1.jpg, almuerzo1.jpg, cena1.jpg, snack1.jpg que estan en la ruta **<img src="file:///C:/Users/User/Desktop/diet_planner/static/img/** .
+ usa imagenes como desayuno1.webp, almuerzo1.webp, cena1.webp, snack1.webp que estan en la ruta **<img src="file:///C:/Users/User/Desktop/diet_planner/static/img/** .
 <img src="{imagen_desayuno}" alt="Desayuno" style="width: 20%; height: auto;">
 <img src="{imagen_almuerzo}" alt="Almuerzo" style="width: 20%; height: auto;">
 <img src="{imagen_cena}" alt="Cena" style="width: 20%; height: auto;">
