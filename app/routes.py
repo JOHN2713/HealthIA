@@ -20,6 +20,7 @@ from flask_mail import Message
 from . import mail
 from weasyprint import HTML
 import os
+import re
 main = Blueprint('main', __name__)
 
 @main.route('/')
@@ -471,6 +472,8 @@ def descargar_menu_pdf(menu_id):
 
     # Construcción del HTML final
     html_final = estilos_pdf + extra_info + menu.html_content
+    # 🔥 Eliminar todas las etiquetas <img> para reducir uso de RAM
+    html_final = re.sub(r'<img[^>]*>', '', html_final)
 
     try:
         # Generar el PDF con WeasyPrint
