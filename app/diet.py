@@ -129,7 +129,7 @@ def generate_menu(proportions, user_data, days):
     prompt = f"""
 Genera un menú alimenticio para {days} día(s), con las siguientes características:
 
-🔸 El objetivo del menú es: **{objetivo}**. Incluye una breve explicación del objetivo en una sección con subtítulo <h3>.
+🔸 El objetivo del menú es: **{objetivo}** para {days} día(s). Incluye una breve explicación del objetivo en una sección con subtítulo <h3>.
 
 🔸 Incluye cuatro comidas diarias: **Desayuno**, **Almuerzo**, **Cena** y **Snack**. Para cada una:
 🔸 Usa estos alimentos y proporciones: {alimentos_utilizados}.
@@ -145,10 +145,10 @@ usa en el html <meta charset="utf-8">
 - Cada bloque debe tener un color pastel diferente, borde redondeado, sombra suave y buena separación.
 - Dentro de cada bloque, incluye: plato, título, ingredientes, porcentaje y, 
  usa imagenes como desayuno1.jpg, almuerzo1.jpg, cena1.jpg, snack1.jpg que estan en la ruta **<img src="file:///C:/Users/User/Desktop/diet_planner/static/img/** .
-<img src="{imagen_desayuno}" alt="Desayuno" style="width: 50%; height: auto;">
-<img src="{imagen_almuerzo}" alt="Almuerzo" style="width: 50%; height: auto;">
-<img src="{imagen_cena}" alt="Cena" style="width: 50%; height: auto;">
-<img src="{imagen_snack}" alt="Snack" style="width: 50%; height: auto;">
+<img src="{imagen_desayuno}" alt="Desayuno" style="width: 20%; height: auto;">
+<img src="{imagen_almuerzo}" alt="Almuerzo" style="width: 20%; height: auto;">
+<img src="{imagen_cena}" alt="Cena" style="width: 20%; height: auto;">
+<img src="{imagen_snack}" alt="Snack" style="width: 20%; height: auto;">
 
 🔸 Estilo y compatibilidad:
 - Devuelve todo el contenido en HTML con un bloque <style> interno donde ya se incluya la librería <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-DPZZn1PZ/F6h+l5EV8LLbM3X5B6BvFxjB54N7uD+1RE4G7DrBt7KMIWffzZqRX7bwomfqBIsK12ohWFXtTrZBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />.
