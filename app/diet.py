@@ -3,7 +3,7 @@ import pulp
 import google.generativeai as genai
 from flask import current_app
 import random
-
+from config import Config
 # Elegir imágenes aleatorias
 imagen_desayuno = f"/static/img/desayuno{random.randint(1,4)}.jpg"
 imagen_almuerzo = f"/static/img/almuerzo{random.randint(1,4)}.jpg"
@@ -11,7 +11,7 @@ imagen_cena = f"/static/img/cena{random.randint(1,4)}.jpg"
 imagen_snack = f"/static/img/snack{random.randint(1,4)}.jpg"
 
 # Configurar Gemini (reemplaza tu API key o usa .env)
-genai.configure(api_key="AIzaSyDDEUHpbOiWHHz3tBiVva-2OgphH-eiPXI")
+genai.configure(api_key=Config.GEMINI_API_KEY)
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 # 1. Leer archivo CSV de alimentos
