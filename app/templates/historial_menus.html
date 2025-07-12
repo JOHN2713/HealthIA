@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="historial-wrapper">
+    <h2>📋 Historial de menús generados</h2>
+
+    {% if menus %}
+        <div class="accordion" id="menuAccordion">
+            {% for menu in menus %}
+            <div class="accordion-item mb-3">
+                <h2 class="accordion-header" id="heading{{ loop.index }}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse{{ loop.index }}" aria-expanded="false"
+                            aria-controls="collapse{{ loop.index }}">
+                        Menú del {{ menu.created_at.strftime('%d/%m/%Y %H:%M') }} - 
+                        {% if menu.cumplido %}✅ Cumplido{% else %}❌ No cumplido{% endif %}
+                    </button>
+                </h2>
+                <div id="collapse{{ loop.index }}" class="accordion-collapse collapse"
+                     aria-labelledby="heading{{ loop.index }}" data-bs-parent="#menuAccordion">
+                    <div class="accordion-body">
+                        <div class="mb-2">
+                            {% if not menu.cumplido %}
+                            <a href="{{ url_for('main.marcar_cumplido', menu_id=menu.id) }}" class="btn btn-success btn-sm">Marcar como cumplido</a>
+                            {% endif %}
+
+                            <a href="{{ url_for('main.descargar_menu_pdf', menu_id=menu.id) }}" class="btn btn-primary btn-sm">Descargar como PDF</a>
+
+                            <form method="POST" action="{{ url_for('main.enviar_menu_email', menu_id=menu.id) }}" style="display: inline;">
+                                <button type="submit" class="btn btn-warning btn-sm">📧 Enviar al correo</button>
+                            </form>
+                        </div>
+
+                        <div class="menu-html-wrapper mt-3">
+                            <div class="menu-html-content">
+                                {{ menu.html_content | safe }}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Aún no has generado ningún menú.</p>
+    {% endif %}
+
+    <a href="{{ url_for('main.plan') }}" class="btn btn-secondary mt-4">Volver a generar menú</a>
+</div>
+{% endblock %}

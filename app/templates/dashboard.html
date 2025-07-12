@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row">
+  <!-- Columna izquierda: Formulario -->
+  <div class="col-md-6">
+    <div class="card p-4 shadow-lg form-container">
+      <h2 class="mb-4">🧍 Tus medidas personales</h2>
+      <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+          <label class="form-label">⚖️ Peso (kg)</label>
+          {{ form.weight(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          <label class="form-label">📏 Estatura (cm)</label>
+          {{ form.height(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          <label class="form-label">🎂 Edad</label>
+          {{ form.age(class="form-control") }}
+        </div>
+        <div class="mb-3">
+          <label class="form-label">🚻 Género</label>
+          {{ form.gender(class="form-select") }}
+        </div>
+        <div class="mb-3">
+          <label class="form-label">⚠️ Alergias alimentarias</label>
+          {{ form.alergias(class="form-control", placeholder="Ej: leche, maní, gluten") }}
+        </div>
+        <button class="btn btn-warning w-100">{{ form.submit.label }}</button>
+      </form>
+
+      <a href="{{ url_for('main.plan') }}" class="btn btn-outline-success mt-4 w-100">
+        Ir al generador de dieta con IA 🍽️
+      </a>
+    </div>
+  </div>
+
+  <!-- Columna derecha: Imagen + Medidas guardadas -->
+<div class="col-md-6 d-flex align-items-center justify-content-center">
+  <div class="info-box p-4 shadow-sm text-center">
+    <img src="{{ url_for('static', filename='img/fondo_plan.jpg') }}" class="img-fluid rounded" alt="imagen-dieta">
+    
+    <p class="mt-3 text-muted">
+      Recuerda que tus medidas ayudan a personalizar tu plan. ¡Actualízalas cuando lo creas necesario!
+    </p>
+
+    {% if medidas %}
+      <div class="text-start mt-3 bg-light p-3 rounded">
+        <h6 class="fw-bold">📌 Tus últimas medidas:</h6>
+        <p>⚖️ <strong>Peso:</strong> {{ medidas.weight }} kg</p>
+        <p>📏 <strong>Estatura:</strong> {{ medidas.height }} cm</p>
+        <p>🎂 <strong>Edad:</strong> {{ medidas.age }} años</p>
+        <p>🚻 <strong>Género:</strong> {{ medidas.gender }}</p>
+        <p>⚠️ <strong>Alergias:</strong> {{ medidas.alergias }}</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+
+{% endblock %}

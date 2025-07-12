@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block content %}
+{% set alergias_guardadas = current_user.alergias.split(',') if current_user.alergias else [] %}
+<h2>🍽 Generador de dieta con IA</h2>
+
+<form method="POST">
+  <div class="mb-3">
+    <label for="objetivo">Objetivo</label>
+    <select class="form-select" id="objetivo" name="objetivo" required>
+      <option>Perder peso</option>
+      <option>Mantener peso</option>
+      <option>Ganar masa</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="duracion">Duración (días)</label>
+    <input type="number" class="form-control" id="duracion" name="duracion" min="1" max="14" value="7" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="presupuesto">Presupuesto diario (USD)</label>
+    <input type="number" class="form-control" id="presupuesto" name="presupuesto" step="0.1" value="15" required>
+  </div>
+
+  <label for="alergias" class="form-label">Selecciona los alimentos que quieres evitar (por alergia o preferencia):</label>
+
+<div class="accordion" id="accordionAlergias">
+  {% for categoria, items in alimentos.items() %}
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="heading-{{ loop.index }}">
+        <button class="accordion-button collapsed text-white" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ loop.index }}" aria-expanded="false" aria-controls="collapse-{{ loop.index }}" style="background-color: {{ categoria_colores.get(categoria, '#6c757d') }};">
+          {{ categoria.capitalize() }}
+        </button>
+      </h2>
+      <div id="collapse-{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ loop.index }}" data-bs-parent="#accordionAlergias">
+        <div class="accordion-body"> 
+          <div class="alergias-columns">
+          {% for item in items %}
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="alergias" value="{{ item }}" id="{{ item }}"
+              {% if item.lower() in alergias_guardadas | map('lower') %}checked{% endif %}>
+              <label class="form-check-label" for="{{ item }}">{{ item }}</label>
+            </div>
+          {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+
+  <div class="form-check mb-3">
+    <br></br>
+        <input class="form-check-input" type="checkbox" id="rutina" name="rutina">
+        <label class="form-check-label" for="rutina">
+             <h5>🏋️ ¿Deseas una rutina de ejercicios?</h5>
+        </label>
+    </div>
+</div>
+
+  <button class="btn btn-success btn-generar">Generar plan</button>
+
+</form>
+
+<hr>
+
+{% if resultado %}
+  <h3 class="mt-4">📊 Proporciones de alimentos (%)</h3>
+  <ul>
+    {% for alimento, porcentaje in resultado.proportions.items() if porcentaje > 0 %}
+      <li><strong>{{ alimento }}</strong>: {{ porcentaje | round(2) }}%</li>
+    {% endfor %}
+  </ul>
+
+  <h3 class="mt-4">🎯 Metas nutricionales diarias</h3>
+  <ul>
+    <li>Calorías: {{ resultado.targets.calories | round(0) }} kcal</li>
+    <li>Proteína: {{ resultado.targets.protein | round(1) }} g</li>
+    <li>Grasa: {{ resultado.targets.fat | round(1) }} g</li>
+    <li>Carbohidratos: {{ resultado.targets.carbs | round(1) }} g</li>
+  </ul>
+
+  <h3 class="mt-4">💰 Costo estimado diario</h3>
+  <p><strong>${{ resultado.costo_total | round(2) }}</strong> por día</p>
+
+    <h3 class="mt-4">📝 Menú sugerido por Gemini AI</h3>
+
+    <div class="card p-4 bg-light">
+        <p><strong>Duración:</strong> {{ resultado.duracion }} día(s)</p>
+        <p>👇 Aquí tienes un resumen de tu menú:</p>
+        <div class="card p-4 bg-white shadow-sm">
+            {{ resultado.menu_html | safe }}
+        </div>
+    </div>
+
+    <a href="{{ url_for('main.historial_menus') }}" class="btn btn-secondary mt-3">
+        📋 Ver historial de menús generados
+    </a>
+      
+    <form action="{{ url_for('main.descargar_menu_pdf', menu_id=resultado.menu_id) }}" method="get">
+        <button type="submit" class="btn btn-danger mt-3">📥 Descargar menú en PDF</button>
+    </form>
+    
+{% endif %}
+
+{% endblock %}
