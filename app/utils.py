@@ -7,10 +7,10 @@ def enviar_menu_por_correo(destinatario, asunto, cuerpo_html, adjunto_bytes=None
     msg.html = cuerpo_html
 
     if adjunto_bytes and nombre_adjunto:
-    msg.attach(
-        filename=nombre_adjunto,
-        content_type=tipo_mime,
-        data=adjunto_bytes
-    )
+        msg.attach(
+            filename=nombre_adjunto,
+            content_type=tipo_mime,
+            data=adjunto_bytes
+        )
 
     mail.send(msg)
