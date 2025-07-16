@@ -63,6 +63,9 @@ def plan():
         "verduras": "#27ae60",
         "cereales": "#f1c40f",
         "bebidas": "#9b59b6",
+        "legumbres": "#ADEBB3",
+        "lacteos": "#D5BA98",
+        "carbohidratos": "#A18262",
         "otros": "#95a5a6"
     }
     if request.method == 'POST':
